@@ -4,7 +4,13 @@ const cors = require("cors");
 require("dotenv").config();
 
 const app = express();
-app.use(cors({ origin: "*" })); // allow requests from any frontend
+app.use(cors({
+  origin: [
+    "https://www.samrat-movies.com.np",   // portfolio website
+    "https://admin-dashboard.vercel.app"   // admin dashboard
+  ]
+}));
+// allow requests from any frontend
 app.use(express.json());
 
 // Routes
