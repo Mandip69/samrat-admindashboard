@@ -1,20 +1,19 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-const dotenv = require("dotenv");
-dotenv.config();
-
-const authRoutes = require("./routes/auth");
-const uploadRoutes = require("./routes/upload");
+require("dotenv").config();
 
 const app = express();
-app.use(cors());
+app.use(cors({ origin: "*" })); // allow requests from any frontend
 app.use(express.json());
 
-app.use("/api/auth", authRoutes);
-app.use("/api/upload", uploadRoutes);
+// Routes
+app.use("/api/upload", require("./routes/upload"));
+app.use("/api/images", require("./routes/images"));
+app.use("/api/auth", require("./routes/auth")); // your auth routes
 
-mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+// Connect DB
+mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB connected"))
   .catch(err => console.log(err));
 

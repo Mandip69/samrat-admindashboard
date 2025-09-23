@@ -4,8 +4,8 @@ const multer = require("multer");
 const jwt = require("jsonwebtoken");
 const cloudinary = require("cloudinary").v2;
 const sharp = require("sharp");
-const dotenv = require("dotenv");
-dotenv.config();
+const Image = require("../models/Image");
+require("dotenv").config();
 
 // Cloudinary config
 cloudinary.config({
@@ -14,7 +14,7 @@ cloudinary.config({
   api_secret: process.env.CLOUD_API_SECRET,
 });
 
-// Middleware to check token
+// Middleware auth
 const auth = (req, res, next) => {
   const token = req.headers.authorization?.split(" ")[1];
   if(!token) return res.status(401).json({ message: "No token" });
@@ -27,26 +27,32 @@ const auth = (req, res, next) => {
   }
 };
 
-// Multer setup (memory storage)
+// Multer setup
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
-// Upload endpoint with compression
+// Upload endpoint
 router.post("/", auth, upload.single("image"), async (req, res) => {
   try {
     if(!req.file) return res.status(400).json({ message: "No file uploaded" });
+    const { category } = req.body;
 
-    // Compress & resize using Sharp
+    // Compress image with Sharp
     const compressedBuffer = await sharp(req.file.buffer)
-      .resize({ width: 1920, withoutEnlargement: true }) // max width 1920px
-      .jpeg({ quality: 80 }) // compress to 80% quality
+      .resize({ width: 1920, withoutEnlargement: true })
+      .jpeg({ quality: 80 })
       .toBuffer();
 
     // Upload to Cloudinary
     cloudinary.uploader.upload_stream(
       { folder: "portfolio" },
-      (error, result) => {
+      async (error, result) => {
         if(error) return res.status(500).json({ message: error.message });
+
+        // Save image in DB
+        const newImage = new Image({ url: result.secure_url, category });
+        await newImage.save();
+
         res.json({ message: "Uploaded successfully", url: result.secure_url });
       }
     ).end(compressedBuffer);
