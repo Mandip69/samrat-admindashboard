@@ -7,9 +7,10 @@ const app = express();
 
 // ✅ Full CORS configuration
 const allowedOrigins = [
-  "https://www.samrat-movies.com.np",    // portfolio site
-  "https://admin-dashboard.vercel.app"   // admin dashboard
+  "https://www.samrat-movies.com.np",
+  "https://samrat-admin.vercel.app"
 ];
+
 
 app.use(cors({
   origin: function(origin, callback) {
