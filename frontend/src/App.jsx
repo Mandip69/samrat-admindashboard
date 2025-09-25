@@ -1,7 +1,7 @@
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
-import Signup from "./pages/Signup";
+import Signup from "./pages/signup";
 import UploadPage from "./pages/UploadPage";
 import MediaList from "./pages/MediaList";
 import PrivateRoute from "./components/PrivateRoute";
