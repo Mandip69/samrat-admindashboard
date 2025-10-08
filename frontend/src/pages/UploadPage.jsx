@@ -20,7 +20,6 @@ export default function UploadPage() {
     fd.append('category', category);
 
     try {
-      // ✅ Notice: '/media' only, because baseURL already has '/api'
       await API.post('/media', fd, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
@@ -37,36 +36,67 @@ export default function UploadPage() {
   }
 
   return (
-    <div className="p-6">
-      <h2 className="text-xl font-bold mb-4">Upload Media</h2>
-      <form onSubmit={handleSubmit} className="bg-white p-4 rounded shadow max-w-lg">
-        <input
-          className="w-full mb-2 p-2 border"
-          value={title}
-          onChange={e => setTitle(e.target.value)}
-          placeholder="Title"
-        />
-        <textarea
-          className="w-full mb-2 p-2 border"
-          value={desc}
-          onChange={e => setDesc(e.target.value)}
-          placeholder="Description"
-        />
-        <select
-          className="w-full mb-2 p-2 border"
-          value={category}
-          onChange={e => setCategory(e.target.value)}
-        >
-          <option>Wedding</option>
-          <option>Travel</option>
-          <option>Events</option>
-          <option>Food</option>
-        </select>
-        <input type="file" className="mb-2" onChange={e => setFile(e.target.files[0])} />
-        <button disabled={loading} className="px-4 py-2 bg-blue-600 text-white rounded">
-          {loading ? 'Uploading...' : 'Upload'}
-        </button>
-      </form>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-indigo-100 to-blue-200 px-4">
+      <div className="w-full max-w-lg bg-white rounded-2xl shadow-xl p-8 transition-transform duration-300 hover:scale-[1.02]">
+        <h2 className="text-2xl font-semibold text-center mb-6 text-gray-800">Upload Media</h2>
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <input
+            className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="Title"
+          />
+
+          <textarea
+            className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400 resize-none"
+            rows="4"
+            value={desc}
+            onChange={(e) => setDesc(e.target.value)}
+            placeholder="Description"
+          />
+
+          <select
+            className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+          >
+            <option>Wedding</option>
+            <option>Travel</option>
+            <option>Events</option>
+            <option>Food</option>
+          </select>
+
+          <div className="w-full">
+            <label className="block mb-2 font-medium text-gray-600">Choose File</label>
+            <input
+              type="file"
+              className="w-full text-sm text-gray-500
+              file:mr-4 file:py-2 file:px-4
+              file:rounded-md file:border-0
+              file:text-sm file:font-semibold
+              file:bg-blue-50 file:text-blue-600
+              hover:file:bg-blue-100 cursor-pointer"
+              onChange={(e) => setFile(e.target.files[0])}
+            />
+          </div>
+
+          <button
+            disabled={loading}
+            className={`w-full py-3 text-white font-medium rounded-md shadow-md transition-all 
+              ${loading
+                ? 'bg-blue-400 cursor-not-allowed'
+                : 'bg-blue-600 hover:bg-blue-700 active:bg-blue-800 hover:shadow-lg'
+              }`}
+          >
+            {loading ? 'Uploading...' : 'Upload'}
+          </button>
+        </form>
+
+        <p className="text-sm text-gray-500 text-center mt-6">
+          © {new Date().getFullYear()} Admin Panel
+        </p>
+      </div>
     </div>
   );
 }
