@@ -9,7 +9,7 @@ export default function Signup() {
   async function handleSubmit(e) {
     e.preventDefault();
     try {
-      const res = await API.post('/auth/register', { username, email, password });
+      const res = await API.post('api/auth/register', { username, email, password });
       localStorage.setItem('token', res.data.token);
       window.location.href = '/';
     } catch (err) {
