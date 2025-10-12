@@ -14,8 +14,8 @@ const app = express();
 // ✅ Allowed origins (for local + production)
 const allowedOrigins = [
   'http://localhost:5173', // for local frontend
-  'https://samrat-admindashboard.vercel.app', // your Vercel frontend
-  'https://samrat-admindashboard.onrender.com', // optional if you host fullstack on Render
+ // your Vercel frontend
+  'https://samrat-admindashboard-5.onrender.com', // optional if you host fullstack on Render
 ];
 
 // ✅ Proper CORS setup
