@@ -6,7 +6,7 @@ const User = require('../models/User');
 const router = express.Router();
 
 // Register (use with care; production apps should use invite flow)
-router.post('api/auth/register', async (req, res) => {
+router.post('/register', async (req, res) => {
   try {
     const { username, email, password } = req.body;
     if (!username || !email || !password) return res.status(400).json({ message: 'Missing fields' });
@@ -24,7 +24,7 @@ router.post('api/auth/register', async (req, res) => {
 });
 
 // Login
-router.post('api/auth/login', async (req, res) => {
+router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
     if (!email || !password) return res.status(400).json({ message: 'Missing fields' });
