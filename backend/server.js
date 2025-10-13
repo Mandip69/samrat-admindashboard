@@ -16,6 +16,7 @@ const allowedOrigins = [
   'https://samrat-admindashboard-5.onrender.com',
 ];
 
+// ✅ Proper CORS setup
 app.use(
   cors({
     origin: function (origin, callback) {
@@ -43,24 +44,24 @@ cloudinary.config({
 mongoose
   .connect(process.env.MONGODB_URI)
   .then(() => console.log('✅ MongoDB connected'))
-  .catch((err) => console.error('❌ MongoDB error', err));
+  .catch((err) => console.error('❌ MongoDB connection error:', err));
 
 // ✅ API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/media', mediaRoutes);
 
-// ✅ Serve frontend (only for production)
+// ✅ Serve frontend build (production)
 const __dirname1 = path.resolve();
-app.use(express.static(path.join(__dirname1, 'frontend', 'dist')));
+app.use(express.static(path.join(__dirname1, '../frontend/dist')));
 
-// ✅ Catch-all for non-API routes (fixed for Express 5)
+// ✅ Fallback for SPA routes (Express 5+ compatible)
 app.use((req, res) => {
-  res.sendFile(path.join(__dirname1, 'frontend', 'dist', 'index.html'));
+  res.sendFile(path.join(__dirname1, '../frontend/dist', 'index.html'));
 });
 
-// ✅ Health Check
+// ✅ Health Check Route
 app.get('/health', (req, res) => res.send('API is running 🚀'));
 
-// ✅ Start server
+// ✅ Start Server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
